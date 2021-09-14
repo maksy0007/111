@@ -1,0 +1,67 @@
+import React, { Component } from 'react'
+import Layout from '../components/layout'
+
+export default class ComingSoon extends Component {
+    constructor(props) {
+        super(props)
+
+	this.state = {
+	    action: '',
+	    timeoutId: false
+	}
+    }
+
+    componentDidMount() {
+	this.actionTicker()
+    }
+
+    componentWillUnmount() {
+	clearTimeout(this.state.timeoutId)
+    }
+	
+    randomInt(min, max) {
+	return Math.round(min + (Math.random() * (max-min)));
+    }
+
+    actionTicker = () => {
+	const action = this.getAction();
+	const timeoutId = setTimeout(this.actionTicker, this.randomInt(16, 400));
+
+	this.setState({ action, timeoutId });
+    }
+
+    getAction() {
+	const junk = ['#','@','%','*','&amp;','&lt;','&gt;','_','=','+','[',']','|','-','!','?'];
+	const actions = ['coding','designing','planning','writing','programming', 'thinking','optimizing', 'refactoring',
+			'simplifying','decoupling','debugging', 'configuring','streamlining','searching','tweaking','editing'];
+
+	let text = actions[this.randomInt(0, actions.length-1)];
+	let chars = text.split('');
+  	const glitch = this.randomInt(0, 3);
+		  
+	for (let i = 0; i < glitch; i++) {
+	    chars[this.randomInt(0, chars.length-1)] = junk[this.randomInt(0, junk.length-1)];
+	}
+		
+	return chars.join('');
+    }
+
+    render() {
+	return (
+	    <Layout>
+		<p className="action-animation">{this.state.action}</p>
+		<div className="follow">
+		    <a target="_blank" rel="noopener noreferrer" className="linkedin" href="https://www.linkedin.com/in/edenadler/">
+			<i className="fab fa-linkedin-in"></i>
+		    </a>
+		    <a target="_blank" rel="noopener noreferrer" className="facebook" href="https://github.com/edenadler">
+			<i className="fab fa-github"></i>
+		    </a>
+		    <a target="_blank" rel="noopener noreferrer" className="instagram" href="https://www.instagram.com/edenadler/">
+			<i className="fab fa-instagram"></i>
+		    </a>
+		</div>
+	    </Layout>
+	)
+    }
+}
